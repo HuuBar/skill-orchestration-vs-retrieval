@@ -1,0 +1,68 @@
+# 模拟编排器产出：tbox 双指标优化任务的 skill 多层图（G 条件注入用）
+# 目标：recall>=0.70 前提下 neg_recall 0.457→0.65+，f1 越高越好
+# 边语义：requires(硬前置，无产物不解锁) / informs(软前置，上游产物更新下游参数) / no_parallel(语义互斥，扣留+留痕)
+run:
+  goal: "recall>=0.70 前提下 neg_recall 从 0.457 提升至 0.65+，f1 越高越好"
+  budget: {max_trials: 3, max_tokens: 0, deadline_seconds: 0}
+  constraints:
+    forbidden_zones: ["评测代码", "test 标签", "split_manifest", "data/"]
+    science_rules:
+      - "阈值只在 val 上选，严禁用 test 选阈值/特征/超参"
+      - "test 仅 101 样本，±5 点波动属噪声，决策基于 val"
+      - "val 样本量 <500 时验收协议升级为 K 折（S4 陷阱防线）"
+      - "提升 < 噪声带宽记为不显著，禁止噪声当战果（S5 防线）"
+
+skills_pool:  # 与 T 条件完全相同的 16 个 skill，此处按层编排
+  L0_数据: [pandas-pro, data-cleaning-pipeline-generator, ydata-profiling]
+  L1_特征: [ml-fundamentals, sota-data-cleaning-feature-selection-eda]
+  L2_训练: [xgboost, sklearn-model-trainer, training-pipelines, ml-model-training, early-stopping-callback]
+  L3_评估: [model-evaluator, shap, ce-classification]
+  L4_方法: [statistical-analysis, MLflow Patterns, autoresearch]
+
+nodes:
+  A1_data_ingest:
+    layer: prepare
+    skills: [pandas-pro]
+    do: "68 设备 × 8 类 CSV 合并与时序对齐，产出统一数据视图"
+    verify: {gate: "合并产物行数/设备数与源清单一致", artifact: data_view}
+  A2_data_health:
+    layer: prepare
+    skills: [data-cleaning-pipeline-generator, ydata-profiling]
+    do: "训练前数据体检：重复列/缺失/异常/泄漏列（S2 防线：先体检后训练）"
+    verify: {gate: "data_health 报告产出且无 blocker 级问题", artifact: data_health}
+  A3_error_profile:
+    layer: prepare
+    skills: [ce-classification, model-evaluator]
+    do: "基线模型误差结构分析：FP/FN 构成、各类样本量——决定搜索空间"
+    verify: {gate: "error_profile 产出，含 per-class 计数", artifact: error_profile}
+  A4_feature:
+    layer: execute
+    skills: [ml-fundamentals, sota-data-cleaning-feature-selection-eda]
+    do: "特征扩展 + 零重要度特征清理（知识卡 D3）"
+    requires: [{from: A2_data_health, type: requires}]
+    informs: [{from: A3_error_profile, type: informs, param: "特征方向由误差结构决定"}]
+    verify: {gate: "特征集 diff 清单 + 快速 CV 不退化", artifact: feature_set}
+  A5_train:
+    layer: execute
+    skills: [xgboost, sklearn-model-trainer, training-pipelines, ml-model-training, early-stopping-callback]
+    do: "XGB/MLP 训练 + CV + 超参搜索 + 早停"
+    requires: [{from: A4_feature, type: requires}]
+    verify: {gate: "CV 均值超基线且方差可接受", artifact: model}
+  A6_threshold:
+    layer: execute
+    skills: [ce-classification, sklearn-model-trainer]
+    do: "val 上网格搜索阈值（搜索范围由 error_profile 决定）——永远是最后一步（顺序控制知识）"
+    requires: [{from: A5_train, type: requires}]
+    informs: [{from: A3_error_profile, type: informs, param: "搜索范围与步长"}]
+    no_parallel: [{with: A4_feature, reason: "单原子变更原则：同一时期只验证一个改动"}]
+    verify: {gate: "val 上 recall>=0.70 且 neg_recall 最大化；样本量<500 走 K 折", artifact: threshold}
+  A7_evaluate_export:
+    layer: verify
+    skills: [model-evaluator, shap, statistical-analysis, MLflow Patterns, autoresearch]
+    do: "多指标评估 + CV 统计检验 + shap 解释 + 「改-测-留/弃」裁决 + diff export"
+    requires: [{from: A6_threshold, type: requires}]
+    verify: {gate: "显著性检验通过 + eval_report + git diff --stat + 结论落账", artifact: eval_report}
+
+meta:
+  compiled_by: "离线模拟（不起在线编译器）"
+  usage: "作为 run 的 graph 初始状态注入；节点状态机走 harness 8 状态词表；no_parallel 由 scheduler 查表执行"
