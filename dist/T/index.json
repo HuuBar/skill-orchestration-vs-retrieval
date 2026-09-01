@@ -1,0 +1,117 @@
+{
+ "skills": [
+  {
+   "name": "autoresearch",
+   "category": "实验方法",
+   "chars": 13429,
+   "description": "Autonomous LLM training optimization with GPU support. Runs 5-minute training experiments, measures val_bpb, keeps improvements or reverts — repeat forever. Use this skill when the user asks to \"train a model autonomously\", \"optimize LLM training\", \"run ML experiments\", \"autoresearch with GPU\", \"opt",
+   "path": "skills_flat/autoresearch/SKILL.md"
+  },
+  {
+   "name": "ce-classification",
+   "category": "分类专项",
+   "chars": 2968,
+   "description": "Handle CE classification workflows for binary and multiclass prediction semantics and class-focused explanation behavior.",
+   "path": "skills_flat/ce-classification/SKILL.md"
+  },
+  {
+   "name": "data-cleaning-pipeline-generator",
+   "category": "数据体检",
+   "chars": 14342,
+   "description": "Generates data cleaning pipelines for pandas/polars with handling for missing values, duplicates, outliers, type conversions, and data validation. Use when user asks to \"clean data\", \"generate data pipeline\", \"handle missing values\", or \"remove duplicates from dataset\".",
+   "path": "skills_flat/data-cleaning-pipeline-generator/SKILL.md"
+  },
+  {
+   "name": "early-stopping-callback",
+   "category": "模型训练",
+   "chars": 1316,
+   "description": "Early Stopping Callback - Auto-activating skill for ML Training. Triggers on: early stopping callback, early stopping callback Part of the ML Training skill category.",
+   "path": "skills_flat/early-stopping-callback/SKILL.md"
+  },
+  {
+   "name": "ml-fundamentals",
+   "category": "特征工程",
+   "chars": 5679,
+   "description": "Master machine learning foundations - algorithms, preprocessing, feature engineering, and evaluation",
+   "path": "skills_flat/ml-fundamentals/SKILL.md"
+  },
+  {
+   "name": "ml-model-training",
+   "category": "模型训练",
+   "chars": 6909,
+   "description": "Train ML models with scikit-learn, PyTorch, TensorFlow. Use for classification/regression, neural networks, hyperparameter tuning, or encountering overfitting, underfitting, convergence issues.",
+   "path": "skills_flat/ml-model-training/SKILL.md"
+  },
+  {
+   "name": "mlflow-patterns",
+   "category": "实验方法",
+   "chars": 10486,
+   "description": "ML experiment tracking, model registry, and deployment with MLflow for reproducible machine learning workflows.",
+   "path": "skills_flat/mlflow-patterns/SKILL.md"
+  },
+  {
+   "name": "model-evaluator",
+   "category": "评估",
+   "chars": 4199,
+   "description": "Comprehensive ML model evaluation with multiple metrics, cross-validation, and statistical testing. Activates for \"evaluate model\", \"model metrics\", \"model performance\", \"compare models\", \"validation metrics\", \"test accuracy\", \"precision recall\", \"ROC AUC\". Generates detailed evaluation reports with",
+   "path": "skills_flat/model-evaluator/SKILL.md"
+  },
+  {
+   "name": "pandas-pro",
+   "category": "数据管道",
+   "chars": 3994,
+   "description": "Use when working with pandas DataFrames, data cleaning, aggregation, merging, or time series analysis. Invoke for data manipulation, missing value handling, groupby operations, or performance optimization.",
+   "path": "skills_flat/pandas-pro/SKILL.md"
+  },
+  {
+   "name": "shap",
+   "category": "评估",
+   "chars": 18342,
+   "description": "Model interpretability and explainability using SHAP (SHapley Additive exPlanations). Use this skill when explaining machine learning model predictions, computing feature importance, generating SHAP plots (waterfall, beeswarm, bar, scatter, force, heatmap), debugging models, analyzing model bias or ",
+   "path": "skills_flat/shap/SKILL.md"
+  },
+  {
+   "name": "sklearn-model-trainer",
+   "category": "模型训练",
+   "chars": 8462,
+   "description": "Scikit-learn model training skill with cross-validation, hyperparameter tuning, pipeline construction, and model serialization. Enables automated ML model development using scikit-learn's comprehensive toolkit.",
+   "path": "skills_flat/sklearn-model-trainer/SKILL.md"
+  },
+  {
+   "name": "sota-data-cleaning-feature-selection-eda",
+   "category": "特征工程",
+   "chars": 15187,
+   "description": "Master SOTA data prep for Kaggle comps: automated EDA (Sweetviz), cleaning",
+   "path": "skills_flat/sota-data-cleaning-feature-selection-eda/SKILL.md"
+  },
+  {
+   "name": "statistical-analysis",
+   "category": "实验方法",
+   "chars": 19427,
+   "description": "Statistical analysis toolkit. Hypothesis tests (t-test, ANOVA, chi-square), regression, correlation, Bayesian stats, power analysis, assumption checks, APA reporting, for academic research.",
+   "path": "skills_flat/statistical-analysis/SKILL.md"
+  },
+  {
+   "name": "training-pipelines",
+   "category": "模型训练",
+   "chars": 5944,
+   "description": "Master training pipelines - orchestration, distributed training, hyperparameter tuning",
+   "path": "skills_flat/training-pipelines/SKILL.md"
+  },
+  {
+   "name": "xgboost",
+   "category": "模型训练",
+   "chars": 1047,
+   "description": "XGBoost gradient boosting library. Use for tabular ML.",
+   "path": "skills_flat/xgboost/SKILL.md"
+  },
+  {
+   "name": "ydata-profiling",
+   "category": "数据体检",
+   "chars": 34321,
+   "description": "Automated data quality reports with comprehensive variable analysis, missing value detection, correlations, and HTML report generation - formerly pandas-profiling",
+   "path": "skills_flat/ydata-profiling/SKILL.md"
+  }
+ ],
+ "note": "T 条件检索索引；description 取自各 SKILL.md frontmatter"
+}
